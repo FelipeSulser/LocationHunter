@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <title>Location Hunter</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="{% static 'hunterapp/css/scrollbar.css' %}">
+      <link rel="stylesheet" href="{% static 'hunterapp/css/style2.css' %}">
+      <link rel="stylesheet" href="{% static 'hunterapp/css/homepage.css' %}">
+      <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+      <script src="http://d3js.org/d3.v3.min.js"></script>
+
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style> /* set the CSS */
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+text {
+    font: 10px sans-serif;
+    color: white;
+}
+text.value {
+    font-size: 100%;
+    fill: white;
+}
+.axisHorizontal .tick line {
+    stroke-width: 1;
+    stroke: steelblue;
+}
+.bar {
+    fill: lightblue;
+    fill-opacity: .9;
+}
+
+
+
+</style>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="col-sm-4">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">LocationHunter</a>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <ul class="nav navbar-nav nav-title">
+        <li><a href="#">NOTIFICATIONS</a></li>
+      </ul>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> PROFILE</a></li>
+          <li><a id="logoutid" href="../logout"><span class="glyphicon glyphicon-log-in"></span> LOGOUT</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!--main section-->
+<div class="container-fluid">
+  <div class="row main">
+    <div class="col-md-3 col-sm-4 col-xs-3">
+    <!-- BEGIN SIDEBAR -->
+      <div class="sidebar">
+        <div class="side-menu" data-spy="affix">
+          <div class="row profile-user">
+            <div class="col-sm-5">
+              <div class="profile-img">
+                <img src="{{profile_pic}}" class="img-responsive img-circle" alt="">
+              </div>
+            </div>
+            <div class="col-sm-7 profile-usertitle">
+                <h3>Welcome</h3>
+                <div class="profile-usertitle-name">
+                  {{username}}
+                </div>
+            </div>
+            
+          </div>
+          <ul class="nav">
+            <li class="active">
+              <a href="/locationhunter/homepage">
+              <i class="glyphicon glyphicon-home"></i>
+              DASHBOARD </a>
+            </li>
+            <li>
+              <a href="#" target="_blank">
+              <i class="glyphicon glyphicon-tag"></i>
+              HASHTAG </a> 
+            </li>
+            <li>
+              <a href="/locationhunter/map_page/hashtags">
+              <i class="glyphicon glyphicon-plane"></i>
+              TRIP </a>
+            </li>
+            <li>
+              <a href="/locationhunter/map_page/influencers">
+              <i class="glyphicon glyphicon-user"></i>
+              PARTNER </a>
+            </li>
+            <li>
+              <a href="#">
+              <i class="glyphicon glyphicon-cog"></i>
+              SETTING </a>
+            </li>
+            <li>
+              <a href="/locationhunter/notification">
+              <i class="glyphicon glyphicon-bell"></i>
+              NOTIFICATION </a>
+            </li>
+          </ul>
+        </div>
+        <!-- END MENU -->
+      </div>
+    </div>
+    <div class="col-md-9 col-sm-8 col-xs-9">
+      <div class="col-sm-8">
+     <form action="/locationhunter/post-email/" method="post">
+      {% csrf_token %}
+  <div class="form-group">
+
+    <label for="exampleInputEmail1">Subscribe to our newsletter</label>
+    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"  name="myemail" >
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="checkbox">
+    
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+    </div>
+  </div>
+</div> 
+
+<footer>
+  <center>
+  <strong>TEAM 404</strong>
+  </center>
+</footer>
+<br>
+<br>
+</body>
+<script>
+
+
+</script>
+</html>
+

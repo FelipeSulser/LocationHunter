@@ -1,0 +1,837 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <title>Location Hunter</title>
+
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="{% static 'hunterapp/css/calendar.css' %}">
+
+    <!-- Animation library for notifications   -->
+     <link rel="stylesheet" href="{% static 'hunterapp/css/animate.min.css' %}">
+   
+
+    <!--  Paper Dashboard core CSS    -->
+     <link rel="stylesheet" href="{% static 'hunterapp/css/paper-dashboard.css' %}">
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+     <link rel="stylesheet" href="{% static 'hunterapp/css/demo.css' %}">
+
+
+    <!--  Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+     <link rel="stylesheet" href="{% static 'hunterapp/css/themify-icons.css' %}">
+         <script src="{% static 'hunterapp/js/jquery-1.10.2.js' %}" type="text/javascript"></script>
+     <script src="{% static 'hunterapp/js/jquery.toast.min.js' %}"></script>
+
+    <script src="{% static 'hunterapp/js/hashtag.js' %}"></script>
+<script>
+var rtype = "";
+
+    //Used to Fetch Popular Posts/Hashtags given a city name and a country Name
+    //city Name is the city's full name, country name
+
+
+function fetchPosts(city_name, country_name) {
+    //Show Loading Screen
+    $("#loading-overlay").show();
+    POPULAR_POSTS_URL = "/locationhunter/popularPost/";
+    //Redirect User to that page:
+    //window.location = POPULAR_POSTS_URL + "?country=" + country_name + "&city=" + city_name;
+    var myToast2 = $.toast({
+        heading: 'Information',
+        text: 'Please wait while we fetch the best hashtags for you!',
+        icon: 'info',
+        hideAfter: false
+    });
+    console.log(POPULAR_POSTS_URL);
+    console.log("Posting : " + city_name + " " + country_name);
+    $.ajax({
+        type: "POST",
+        url: POPULAR_POSTS_URL,
+        data: {
+            csrfmiddlewaretoken: "{{ csrf_token }}",   // < here
+            state: "inactive",
+            city: city_name, country: country_name
+        },
+        success: function (data) {
+            console.log(data);
+            myToast2.update({
+                heading: 'Influencers',
+                text: 'Thank you for waiting, here are your candidates',
+                icon: 'success',
+                hideAfter: false,
+                loader: false
+            });
+            //Dump Contents into the Overlay
+            //Destroy Old Accordion if Found
+            if ($("#overlay-content").hasClass("ui-accordion")) {
+                $('#overlay-content').accordion('destroy');
+            }
+
+            //Clear Old Items
+            $("#overlay-content").html("");
+
+            //Check If Valid Response
+            if (data.trim() == "error") {
+                $.toast({
+                    heading: 'Error',
+                    text: 'Could not find location',
+                    showHideTransition: 'fade',
+                    icon: 'error',
+                    loader: false
+                });
+                $("#overlay-content").append("<li class='sidebar-card'>Sorry.. Not Found :(</li>");
+            } else {
+                //var hashtags = data.trim().split(" ");
+                //hashtags.forEach(function(tag){
+                //  $("#overlay-content-list").append("<li class='sidebar-card'>"+tag+"</li>");
+                //});
+
+                //Parse JSON Object
+                var response_object = JSON.parse(data);
+                response_object.forEach(function (tagObject) {
+                    /*$("#overlay-content").append("<div class='overlaycontent-item'>");
+                    $("#overlay-content").append("<h3>" + tagObject['tag:'] + "</h3>");*/
+                    var detail_content =
+                        "<div class='overlaycontent-item'>"+
+                        "<h3><i class='fa fa-hashtag' aria-hidden='true'></i> " + tagObject['tag:'] + "</h3>"+
+                        "<div  id = '" + tagObject['tag:'] + "'>" +
+                        "<div class='detail-content'>" +
+                        "<button class='btn btn-primary' type='button' style='margin:10px'>" +
+                        "Score <span class='badge' id='score'>" + tagObject['score'] + "</span>" +
+                        "</button>" +
+                        "<button class='btn btn-primary' type='button' style='margin:10px'>" +
+                        "Count <span class='badge' id='count'>" + tagObject['count'] + "</span>" +
+                        "</button>" +
+                        "<button style='margin:10px;display:block' class='expand btn btn-primary'>Navigate</button>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>";
+                    $("#overlay-content").append(detail_content);
+                });
+
+
+                //Activate Accordion
+                /*$("#overlay-content").accordion({
+                    collapsible: true,
+                    active: false
+                });
+*/
+
+            }
+            $("#sidebar-overlay").css({"visibility": "visible"});
+            //Hide Loading Screen
+            $("#loading-overlay").hide();
+        }
+    }).fail(function (jqxhr, textStatus, error) {
+        var err = textStatus + ", " + error;
+        console.log("Request Failed: " + err);
+        //Hide Loading Screen
+        $("#loading-overlay").hide();
+        alert("An Error Has Occurred ");
+    });
+}
+
+
+function fetchInfluencers(city_name, country_name) {
+    //Show Loading Screen
+    $("#loading-overlay").show();
+    POPULAR_INFLUENCERS_URL = "/locationhunter/popularInfluencers/";
+    var myToast = $.toast({
+        heading: 'Information',
+        text: 'Please wait while we fetch your partners! We are making sure that we find the perfect match for you!',
+        icon: 'info',
+        hideAfter: false
+    });
+
+    $.ajax({
+        type: "POST",
+        url: POPULAR_INFLUENCERS_URL,
+        data: {
+            csrfmiddlewaretoken: "{{ csrf_token }}",   // < here
+            state: "inactive",
+            city: city_name, country: country_name
+        },
+        success: function (data) {
+            myToast.update({
+                heading: 'Influencers',
+                text: 'Thank you for waiting, here are your candidates',
+                icon: 'success',
+                hideAfter: false,
+                loader: false
+            });
+            console.log("Fetched the Influencers . . . ");
+            console.log(data);
+            var response_object = JSON.parse(data);
+            //Dump Contents into the Overlay
+            //$("#overlay-content").html(data);
+            var maxval = 0;
+            for (var i = 0; i < response_object.length; i++) {
+                if (response_object[i]['score'] > maxval) {
+                    maxval = response_object[i]['score'];
+                }
+            }
+            console.log(maxval);
+
+            //Clear Old Items
+            /*if ($("#overlay-content").hasClass("ui-accordion")) {
+                $('#overlay-content').accordion('destroy');
+            }*/
+            $("#overlay-content").html("");
+            if (data.trim() == "error") {
+                $.toast({
+                    heading: 'Error',
+                    text: 'Could not find location',
+                    showHideTransition: 'fade',
+                    icon: 'error'
+                });
+                $("#overlay-content").append("<li class='sidebar-card'>Sorry.. Not Found :(</li>");
+            } else {
+
+                response_object.forEach(function (userObj) {
+                    console.log(userObj);
+                   
+                    var profile_pic_url = userObj['user_data']['profile_pic_url'];
+                    var user_profile_link = userObj['user_data']['url_link'];
+                    var user_id = userObj['user_data']['userid'];
+                    //$("#overlay-content").append(mystr);
+                    var myscore = ((100 * userObj['score']) / maxval).toFixed(1);
+
+                    //Add Contents to Accordion
+                    //Use image as a link
+                    var generated_content =
+                         "<div class='overlaycontent-item'>"+
+                         "<h3>"+userObj['user_data']['username']+"</h3>"+
+                        "<div class='influencer-div' id="+userObj['user_data']['username']+">" +
+                        "<a href='" + user_profile_link + "' target='_blank'><img class='influencer-pic' src='" + profile_pic_url + "' /></a>" +
+                        "<p class='influencer-p' >Similarity : " + myscore + "\%</p>" +
+                        "<div class='w3-section' id='"+user_id+"'>" +
+                        "<button class='btn btn-raised btn-primary friendbutton' id='accept' >Follow</button>" +
+                        "<button class='btn btn-raised btn-secondary friendbutton' id='decline' >Dismiss</button>" +
+                        "</div>" +
+                        "</div>"+
+                        "</div>";
+                    $("#overlay-content").append(generated_content);
+                });
+      
+            }
+            $("#sidebar-overlay").css({"visibility": "visible"});
+            //Hide Loading Screen
+            $("#loading-overlay").hide();
+        }
+    }).fail(function (jqxhr, textStatus, error) {
+        var err = textStatus + ", " + error;
+        console.log("Request Failed: " + err);
+        //Hide Loading Screen
+        $("#loading-overlay").hide();
+        alert("An Error Has Occurred ");
+    });
+
+}
+
+
+function initMap() {
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 47.372086, lng: 8.541176},
+        zoom: 10
+    });
+    var card = document.getElementById('pac-card');
+    var input = document.getElementById('pac-input');
+    var types = document.getElementById('type-selector');
+    var strictBounds = document.getElementById('strict-bounds-selector');
+
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    // Bind the map's bounds (viewport) property to the autocomplete object,
+    // so that the autocomplete requests use the current map bounds for the
+    // bounds option in the request.
+    autocomplete.bindTo('bounds', map);
+
+    var infowindow = new google.maps.InfoWindow();
+    var infowindowContent = document.getElementById('infowindow-content');
+    infowindow.setContent(infowindowContent);
+    var marker = new google.maps.Marker({
+        map: map,
+        anchorPoint: new google.maps.Point(0, -29)
+    });
+
+    autocomplete.addListener('place_changed', function () {
+        infowindow.close();
+        marker.setVisible(false);
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+
+            $.toast({
+                heading: 'Error',
+                text: 'Invalid Place',
+                showHideTransition: 'fade',
+                icon: 'error',
+                loader: false
+            });
+            return;
+        }
+
+        // If the place has a geometry, then present it on a map.
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);  // Why 17? Because it looks good.
+        }
+        marker.setPosition(place.geometry.location);
+        marker.setVisible(true);
+
+        var address = '';
+        if (place.address_components) {
+            address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+
+
+            //Always the first component
+            city_name = place.address_components[0].short_name;
+            last_index = place.address_components.length - 1;
+            country_name = place.address_components[last_index].short_name;
+            console.log("City Name: " + city_name);
+            console.log("Country Name: " + country_name);
+            console.log(place);
+
+            //Fetch Data
+            var reqType = $("#requestType").val();
+            console.log("Requesting : " + reqType);
+            rtype = reqType;
+            if (reqType == "hashtags") {
+                fetchPosts(city_name, country_name);
+            } else if (reqType == "influencers") {
+                fetchInfluencers(city_name, country_name);
+            } else {
+                alert("Unrecognized Request Type");
+            }
+
+        }
+
+        //Display on Marker on Map
+        //infowindowContent.children['place-icon'].src = place.icon;
+        infowindowContent.children['place-name'].textContent = place.name;
+        //infowindowContent.children['view_posts_button'].textContent = "View Popular Posts";
+        infowindow.open(map, marker);
+    });
+
+    //Autocomplete with City Name Only
+    autocomplete.setTypes(['(cities)']);
+
+}
+</script>
+</head>
+<style type="text/css">
+
+#infowindow-content .title {
+    font-weight: bold;
+}
+
+#infowindow-content {
+    display: none;
+}
+
+#infowindow-content {
+    display: inline;
+}
+#profimg{
+    height: 40%;
+    width: 40%;
+    left: 50%;
+    margin-left: 30%;
+}
+#sidebar-overlay {
+    visibility: hidden; /* Only Shown On Demand */
+    position: fixed;
+    z-index: 99999;
+    background-color: #2196F3;
+    bottom: 0;
+    right: 0;
+    height: 85%;
+    width: 600px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    /* pac styling */
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-family: Roboto;
+    padding: 10px 20px;
+    color: white;
+
+}
+
+#sidebar-overlay ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.svg-container {
+    display:block;
+    position: relative;
+    width: 100%;
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+}
+.hashtag_trend{
+    height: 300px;
+    width: 500px;
+}
+#chartActivity{
+}
+
+.friend-item{
+    display: inline-block;
+    margin-right:6px;
+    margin-bottom: 16px;
+    padding: 25px 20px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+.friend-item:hover{
+
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 6px 9px rgba(0,0,0,.2);
+}
+
+.friendbutton{
+    border-radius: 2px;
+    margin: 5px 7px;
+}
+
+#refbutt{
+    border: 0;
+    border-radius: 7px;
+    margin: 5px 7px;
+
+}
+#map{
+    height: 500px;
+}
+
+#refbutt:hover{
+    color:white;
+}
+
+.imagefollower{
+    border-radius: 50%;
+}
+#matchesrow{
+    position: fixed;
+}
+#loading-overlay {
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: center;
+        }
+
+#loading-overlay img {
+    margin-top: 30%;
+    width: 100px;
+    height: 100px;
+
+}
+
+
+span strong{
+    color: lightgray;
+}
+.card{
+    border-radius: 0 !important;
+}
+.pac-card {
+    outline: none;
+    font-family: Roboto;
+    color: white;
+    
+}
+
+#pac-container {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-right: 12px;
+}
+
+#pac-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 3px 13px 3px 13px;
+    width: 400px;
+    border: 0;
+    color:black !important;
+}
+
+#pac-input:focus {
+    border-color: #4d90fe;
+
+}
+input:focus{
+    color:black !important;
+}
+
+
+.overlaycontent-item{
+    padding:12px;
+    overflow: hidden;
+    width: 287px;
+    display: inline-block;
+
+    margin-right:6px;
+    margin-bottom: 16px;
+    padding: 25px 20px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    text-align: center;
+}
+.overlaycontent-item:hover{
+     box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 6px 9px rgba(0,0,0,.2);
+}
+.overlaycontent-item h3{
+    display: inline-flex;
+}
+.overlaycontent-item h3 i{
+    margin-right: 20px;
+}
+
+#clearmatches{
+    border-radius: 0;
+}
+.influencer-pic{
+    border-radius: 50%;
+}
+
+</style>
+<body>
+    <input type="hidden" value={{ type }} id="requestType"/>
+    <div class="wrapper">
+        <div class="sidebar" data-background-color="white" data-active-color="danger">
+          <div class="sidebar-wrapper">
+                <div class="logo">
+                    <img src="{{profile_pic}}" class="img-responsive img-circle" id="profimg" alt="">
+                    <a href="http://www.instagram.com/{{username}}/" class="simple-text">
+                        @{{username}}
+                    </a>
+                </div>
+
+                <ul class="nav">
+                    <li >
+                        <a href="/locationhunter/homepage/">
+                            <i class="ti-panel"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/locationhunter/map_page/hashtags">
+                            <i class="glyphicon glyphicon-tag"></i>
+                            <p>HASHTAG</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/locationhunter/trips/">
+                            <i class="glyphicon glyphicon-plane"></i>
+                            <p>TRIP</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/locationhunter/map_page/influencers">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <p>PARTNER</p>
+                        </a>
+                    </li>
+                </ul>
+          </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar bar1"></span>
+                            <span class="icon-bar bar2"></span>
+                            <span class="icon-bar bar3"></span>
+                        </button>
+
+                        <a class="navbar-brand" href="#">Map Page</a>
+
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">                       
+                <li>
+                                <a href="/locationhunter/settings/">
+                    <i class="ti-settings"></i>
+                    <p>Settings</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a id="logoutid" href="../logout">
+                                    <i class="glyphicon glyphicon-log-in"></i>
+                                    <p>Logout</p>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </nav>
+
+            <div class="pac-card" id="pac-card">
+        <div id="pac-container">
+            <input id="pac-input" type="text"
+                   placeholder="Enter a location">
+        </div>
+             </div>
+            <div class="content" id="alldata">  
+            <div class="row" id="graphcard">
+    
+                <div class="col-lg-8 col-sm-10">
+                    <div class="card">
+                        <div class="header">
+                                <h4 class="title">Related Hashtags:</h4>
+                        </div>
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div id="mygraph"></div>
+                                </div>
+                               
+                            </div>
+                            <div class="footer">
+                                <hr />
+                                <div class="stats">
+                                    <i class="ti-reload"></i> Updated now
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                             
+                </div>     
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Matches:  <button class='btn btn-raised btn-primary' id="clearmatches">Clear</button></h4>
+
+                                <p class="category">Top Results</p>
+                            </div>
+                            <div class="content" id="overlay-content">
+                           
+                            
+                            </div>
+
+                                <div class="footer">
+                                    <hr>
+
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Map:</h4>
+                                    <p class="category">Select a city</p>
+                                </div>
+                                <div class="content">
+                                    <div id="loading-overlay"/>
+                                    <img src="{% static 'hunterapp/media/loading.gif' %}"/></div>
+                                    <div id="map"></div>
+                                    <div id="infowindow-content">
+                                    <span id="place-name" class="title"></span><br>
+                                    <span id="place-address"></span>
+                                </div>
+                                    <div class="footer">
+                                        
+                                        <hr>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1b5l8OsYVdTVNRsa43BSpsCmp62t8K3o&language=en&region=GB&libraries=places&callback=initMap"
+    async defer></script>
+    <script type="text/javascript">
+        var base_url = 'http://129.132.114.28:8080/locationhunter/';
+        var undo;
+        //var country_name = "";
+        //var city_name = "";
+        undo = $("#graphcard").detach();
+        //Attach click handler for viewing recent posts
+        $(document).ready(function () {
+            
+        });
+        $("#close-button").click(function () {
+            $("#sidebar-overlay").css({"visibility": "hidden"});
+        });
+        $("#clearmatches").click(function () {
+            $("#overlay-content").html("");
+            console.log("GRAPHCARD HAS:");
+            console.log($("#graphcard"));
+            console.log("UNDO HAS");
+            console.log(undo);
+            $("#graphcard").detach();
+
+        });
+        $("#overlay-content").on("click", "#accept", function () {
+            var clicked_user = this.parentNode.id;
+            var clicked_name = this.parentNode.parentNode.id;
+            var button = this;
+            $.ajax({
+                url: base_url+"fof/action/",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    related_name: clicked_name,
+                    related_id: clicked_user,
+                    action: 'accept'
+                },
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data)
+                    result = JSON.parse(data)
+                    if (result['type'] == 'OK') {
+                        $(button).hide();
+                        $(button).next().hide()
+                    } else {
+                        $.toast({
+                            text: result['type'], // Text that is to be shown in the toast
+                            heading: 'Message:', // Optional heading to be shown on the toast
+                            showHideTransition: 'slide', // fade, slide or plain
+                            allowToastClose: true, // Boolean value true or false
+                            hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                            stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                            position: 'bottom-left', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+
+
+                            textAlign: 'left',  // Text alignment i.e. left, right or center
+                            loader: false,  // Whether to show loader or not. True by default
+                            beforeShow: function () {
+                            }, // will be triggered before the toast is shown
+                            afterShown: function () {
+                            }, // will be triggered after the toat has been shown
+                            beforeHide: function () {
+                            }, // will be triggered before the toast gets hidden
+                            afterHidden: function () {
+                            }  // will be triggered after the toast has been hidden
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Due to some reason, you can't do it now")
+                }
+            });
+        });
+        $("#overlay-content").on("click", "#decline", function () {
+            var clicked_user = this.parentNode.id;
+            var clicked_name = this.parentNode.parentNode.id;
+            var button = this;
+            $.ajax({
+                url: base_url+"fof/action/",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    related_name: clicked_name,
+                    related_id: clicked_user,
+                    action: 'decline'
+                },
+                success: function (data, textStatus, jqXHR) {
+
+                    result = JSON.parse(data)
+                    if (result['type'] == 'OK') {
+                        $(button).hide();
+                        $(button).prev().hide()
+                    } else {
+                        alert(result['type'])
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Due to some reason, you can't do it now");
+                }
+            });
+        });
+
+
+    </script>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav class="pull-left">
+                        <ul>
+
+                            <li>
+                                <a href="#">
+                                    LocationHunter
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+
+</body>
+
+
+    <script src="{% static 'hunterapp/js/bootstrap.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'hunterapp/js/bootstrap-checkbox-radio.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'hunterapp/js/bootstrap-notify.js'%}" type="text/javascript"></script>
+
+
+    <script src="{% static 'hunterapp/js/paper-dashboard.js' %}" type="text/javascript"></script>
+
+
+    <!--  Notifications Plugin    -->
+
+    <!--  Google Maps Plugin    -->
+
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="{% static 'hunterapp/js/jquery.toast.min.js' %}"></script>
+    <script src="{% static 'hunterapp/js/moment.js' %}"></script>
+
+</html>

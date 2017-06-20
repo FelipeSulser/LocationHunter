@@ -1,0 +1,442 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <title>Location Hunter</title>
+
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="{% static 'hunterapp/css/calendar.css' %}">
+
+    <!-- Animation library for notifications   -->
+     <link rel="stylesheet" href="{% static 'hunterapp/css/animate.min.css' %}"> 
+    <!--  Paper Dashboard core CSS    -->
+     <link rel="stylesheet" href="{% static 'hunterapp/css/paper-dashboard.css' %}">
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+     <link rel="stylesheet" href="{% static 'hunterapp/css/demo.css' %}">
+
+
+    <!--  Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+     <link rel="stylesheet" href="{% static 'hunterapp/css/themify-icons.css' %}">
+</head>
+<style type="text/css">
+
+#infowindow-content .title {
+    font-weight: bold;
+}
+
+#infowindow-content {
+    display: none;
+}
+
+#infowindow-content {
+    display: inline;
+}
+#profimg{
+    height: 40%;
+    width: 40%;
+    left: 50%;
+    margin-left: 30%;
+}
+#sidebar-overlay {
+    visibility: hidden; /* Only Shown On Demand */
+    position: fixed;
+    z-index: 99999;
+    background-color: #2196F3;
+    bottom: 0;
+    right: 0;
+    height: 85%;
+    width: 600px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    /* pac styling */
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-family: Roboto;
+    padding: 10px 20px;
+    color: white;
+
+}
+
+#sidebar-overlay ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.svg-container {
+    display:block;
+    position: relative;
+    width: 100%;
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+}
+.hashtag_trend{
+    height: 300px;
+    width: 500px;
+}
+#chartActivity{
+}
+
+.friend-item{
+    display: inline-block;
+    margin-right:6px;
+    margin-bottom: 16px;
+    padding: 25px 20px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+.friend-item:hover{
+
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 6px 9px rgba(0,0,0,.2);
+}
+
+.friendbutton{
+    border-radius: 2px;
+    margin: 5px 7px;
+}
+
+#refbutt{
+    border: 0;
+    border-radius: 7px;
+    margin: 5px 7px;
+
+}
+#map{
+    height: 500px;
+}
+
+#refbutt:hover{
+    color:white;
+}
+
+#shiftedleft{
+    margin-left: 8px;
+}
+#matchesrow{
+    position: fixed;
+}
+#loading-overlay {
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: center;
+        }
+
+#loading-overlay img {
+    margin-top: 30%;
+    width: 100px;
+    height: 100px;
+
+}
+
+
+span strong{
+    color: lightgray;
+}
+.card{
+    border-radius: 0 !important;
+}
+.pac-card {
+    outline: none;
+    font-family: Roboto;
+    color: white;
+    
+}
+
+#pac-container {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-right: 12px;
+}
+
+#pac-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 3px 13px 3px 13px;
+    width: 400px;
+    border: 0;
+    color:black !important;
+}
+
+#pac-input:focus {
+    border-color: #4d90fe;
+
+}
+input:focus{
+    color:black !important;
+}
+
+
+.galleryitem{
+    overflow: hidden;
+    width: 250px;
+    height: 250px;
+    display: inline-block;
+
+    margin-right:6px;
+    margin-bottom: 8px;
+    margin-left:6px;
+    margin-top: 8px;
+    padding: 25px 20px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    text-align: center;
+}
+.galleryitem img{
+    width: 120px;
+    height: 120px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+}
+.galleryitem button{
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 15px;
+    border-radius: 0;
+}
+.overlaycontent-item:hover{
+     box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 6px 9px rgba(0,0,0,.2);
+}
+.overlaycontent-item h3{
+    display: inline-flex;
+}
+.overlaycontent-item h3 i{
+    margin-right: 20px;
+}
+
+#clearmatches{
+    border-radius: 0;
+}
+.influencer-pic{
+    border-radius: 50%;
+}
+.searchtool{
+    display:inline-flex !important;
+}
+.searchtool i{
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.searchtool input{
+    background:white;
+
+} 
+
+</style>
+<body>
+    <input type="hidden" value={{ type }} id="requestType"/>
+    <div class="wrapper">
+        <div class="sidebar" data-background-color="white" data-active-color="danger">
+          <div class="sidebar-wrapper">
+                <div class="logo">
+                    <img src="{{profile_pic}}" class="img-responsive img-circle" id="profimg" alt="">
+                    <a href="http://www.instagram.com/{{username}}/" class="simple-text">
+                        @{{username}}
+                    </a>
+                </div>
+
+                <ul class="nav">
+                    <li >
+                        <a href="/locationhunter/homepage/">
+                            <i class="ti-panel"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/locationhunter/map_page/hashtags">
+                            <i class="glyphicon glyphicon-tag"></i>
+                            <p>HASHTAG</p>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/locationhunter/responsivetrips/">
+                            <i class="glyphicon glyphicon-plane"></i>
+                            <p>TRIP</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/locationhunter/map_page/influencers">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <p>PARTNER</p>
+                        </a>
+                    </li>
+                </ul>
+          </div>
+        </div>
+
+        <div class="main-panel">
+            <div id="loading-overlay"/>
+                <img src="{% static 'hunterapp/media/loading.gif' %}"/></div>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar bar1"></span>
+                            <span class="icon-bar bar2"></span>
+                            <span class="icon-bar bar3"></span>
+                        </button>
+
+                        <a class="navbar-brand" href="#">Map Page</a>
+
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">                       
+                <li>
+                                <a href="/locationhunter/settings/">
+                    <i class="ti-settings"></i>
+                    <p>Settings</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a id="logoutid" href="../logout">
+                                    <i class="glyphicon glyphicon-log-in"></i>
+                                    <p>Logout</p>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content" id="alldata">    
+               <div class="row" >
+    
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card">
+                        <div class="header">
+                                <h4 class="title">Search:</h4>
+                                <p class="category"> Find locations</p>
+                        </div>
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-12">
+
+                                   
+                                </div>
+                               
+                            </div>
+                            <div class="footer">
+                                <hr />
+                                <div class="stats searchtool">
+                                    <i class="ti-search">   
+                                       </i> 
+                                    <input id="input-email" type="text" class="form-control city-search" placeholder="Search for a city">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                             
+                </div>     
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                
+                                <div class="header">
+                                    <h4 class="title">Results</h4>
+                                    <p class="category">Top locations</p>
+                                </div>
+                                <div class="content container">
+
+                                   <div class="gallery">
+                                       
+
+                                    </div>
+                                </div>
+                                    <div class="footer">
+                                        <hr />
+                                <div class="stats">
+                                    <i class="ti-reload" id="shiftedleft"></i> Updated now
+                                </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Trip  <button class='btn btn-raised btn-primary' id="generate" style="float:right;">Generate</button></h4>
+
+                                    <p class="category">Add locations to your trip</p>
+                                </div>
+                                <div class="content" id="recommendation">
+                                    <div class="force-overflow friend-list" id="selected-rec">
+                                    </div>
+                                </div>
+                                    <div class="footer">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav class="pull-left">
+                        <ul>
+
+                            <li>
+                                <a href="#">
+                                    LocationHunter
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+
+</body>
+    <link rel="stylesheet" href="{% static 'hunterapp/css/jquery.toast.min.css' %}">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.js"></script>
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="{% static 'hunterapp/js/bootstrap.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'hunterapp/js/bootstrap-checkbox-radio.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'hunterapp/js/bootstrap-notify.js'%}" type="text/javascript"></script>
+    
+     <script src="{% static 'hunterapp/js/responsivetrips.js'%}" type="text/javascript"></script>
+    
+
+
+    <script src="{% static 'hunterapp/js/paper-dashboard.js' %}" type="text/javascript"></script>
+
+</html>

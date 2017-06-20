@@ -1,0 +1,211 @@
+
+rect.bordered {
+        stroke: #E6E6E6;
+        stroke-width:2px;
+      }
+
+  text.mono {
+    font-size: 9pt;
+    font-family: Consolas, courier;
+    fill: #aaa;
+  }
+
+  text.axis-workweek {
+    fill: #000;
+  }
+
+  text.axis-worktime {
+    fill: #000;
+  }
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+text {
+    font: 10px sans-serif;
+    color: white;
+}
+text.value {
+    font-size: 100%;
+    fill: white;
+}
+.axisHorizontal .tick line {
+    stroke-width: 1;
+    stroke: steelblue;
+}
+.bar {
+    fill: lightblue;
+    fill-opacity: .9;
+}
+
+#recommendation{
+  height: 600px;
+}
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+
+    left: 0;
+}
+
+#accept{
+  margin:5px;
+}
+.friendelem{
+  margin:5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column
+}
+.imagefollower{
+  margin-top:10px;
+  height: 150px;
+  width:150px;
+  z-index: 100;
+  border-radius: 50%; /*the magic*/
+  text-align: center;
+}
+.buttondivfriend{
+  display: inline-block;
+}
+
+.friend-item{
+  margin: 5px;
+}
+.addcolor{
+  background-color: #F4F4F4;
+}
+
+
+#accept{
+
+}
+
+
+#mygrid{
+  box-sizing: border-box;
+}
+.ingrid {
+    width: 50%;
+    height: 50%;
+    float: left;
+}
+
+.ingrid:nth-of-type(1) {
+
+}
+
+.ingrid:nth-of-type(2) {
+
+}
+
+.ingrid:nth-of-type(3) {
+
+}
+
+.ingrid:nth-of-type(4) {
+
+}
+.container {
+    width: 100%;
+    position: relative;
+}
+
+
+
+.container img {
+    width:280px;
+    margin: 20px auto 0 auto;
+    display:block;
+}
+
+.container input[type=text] {
+    width: 80%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    /*background-image: url('./images/search-icon.png');*/
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    margin-left: 10%;
+}
+
+
+
+
+
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* or space-around */
+}
+#ui-id-1{
+    background-color: #00C853;
+    width:80px;
+}
+.gallery a {
+  display: block;
+  margin-bottom: 8px;
+  width: calc(50% - 4px);
+  text-decoration: none;
+  color: black;
+}
+
+@media screen and (min-width: 50em) {
+  .gallery a {
+    width: calc(25% - 6px);
+  }
+}
+
+.gallery a:hover img {
+  transform: scale(1.15);
+}
+
+.gallery figure {
+  margin: 0;
+  overflow: hidden;
+}
+
+.gallery figcaption {
+  margin-top: 15px;
+}
+
+.gallery img {
+  border: none;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  background: #ccc;
+  transition: transform .2s ease-in-out;
+}
+
+
+

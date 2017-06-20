@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Terms Of Service and Privacy Policy</title>
+  </head>
+  <body>
+<div>
+    <h1><a href="/">Results</a></h1>
+</div>
+
+{% for post in results %}
+    <div>
+        <p>published: {{ post.published_date }}</p>
+        <h1><a href="">{{ post.title }}</a></h1>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endfor %}
+</body>
+</html>

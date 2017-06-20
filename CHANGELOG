@@ -1,0 +1,17 @@
+ ############ Now the working project is "team404-islab2017"!!  ############
+
+
+ ############ Felipe's Changes  ############ 
+Collection of 'users' now contains the following data:
+    - Data about followers and followed by
+    - List of <follower_count,timestamp> to graph the trend, gets only inserted if previous one was before 24 hrs
+    - user has now a last_login timestamp
+    - user has now 'user_specific_hashtags' that define his style.
+    
+    
+    
+Collection of 'cached_location' now contains the following data:
+    - cached_location.cachedposts now all contain a hashtags list
+    - cachedposts only get inserted if timestamp is older than last inserted
+    
+ ############ End Felipe's Changes  ############ 

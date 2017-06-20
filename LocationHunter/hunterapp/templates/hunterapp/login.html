@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>LocationHunter</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="{% static 'hunterapp/css/login.css' %}" /> 
+	</head>
+	<body>
+		
+			<section id="header">
+				<div class="inner">
+					<span class="icon major fa-camera-retro"></span>
+					<h1>Welcome to <strong>LocationHunter</strong>, the tool<br />
+					that helps photographers in Instagram</a>.</h1>
+					<p>Plan your next trip to a location that will maximize your relevance.<br/> Become relevant now. </p>
+					<ul class="actions">
+						<li><a href="https://api.instagram.com/oauth/authorize/?client_id=06c1a4fb726246a783c8c2b17e792685&redirect_uri=http://129.132.114.28:8080/locationhunter/homepage&response_type=code" class="button scrolly">Log In</a></li>
+					</ul>
+				</div>
+			</section>
+		<!-- One -->
+			<section id="one" class="main style1">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>LocationHunter optimizes trips for photographers</h2>
+							</header>
+							<p>Plan your next trip to a major city or to a wildlife park and see which hashtags are trending there. Find new travel buddies for your next trip. Find new followers that will help you increase instagram traffic.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<span class="image fit"><img src="{% static 'hunterapp/media/stock2.jpg' %}" alt="" /></span>
+						</div>
+					</div>
+				</div>
+			</section>
+		<!-- Two -->
+			<section id="two" class="main style2">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<ul class="major-icons">
+								<li><span class="icon style2 major fa-users"></span></li>
+								<li><span class="icon style3 major fa-camera-retro"></span></li>
+								<li><span class="icon style5 major fa-desktop"></span></li>
+								<li><span class="icon style6 major fa-calendar"></span></li>
+							</ul>
+						</div>
+						<div class="6u$ 12u$(medium)">
+							<header class="major">
+								<h2>How will LocationHunter help me improve my Instagram game?</h2>
+							</header>
+							<p>Using data collected from your previous publications and the locations you want to visit, we provide a ranking of the hashtags that are the most relevant in that location from your perspective.</p>
+							<p>
+							Recommending travel buddies is another feature of LocationHunter. This will help you grow your network of known photographers. Become known worldwide as the best photographer.
+							</p>
+							<p>
+							Know who you follow. LocationHunter provides a recommender system that will automatically pick followers that match with your type of photography style and are relevant. This will maximize your relevance as well increasing your chance of networking and reposting your images.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+		<!-- Three -->
+			<section id="three" class="main style1 special">
+				<div class="container">
+					<header class="major">
+						<h2>LocationHunter Features</h2>
+					</header>
+					<p>Combining these features will help you unleash your potential</p>
+					<div class="row 150%">
+						<div class="4u 12u$(medium)">
+							<span class="image fit"><img src="{% static 'hunterapp/media/stock5.jpeg' %}" alt="" /></span>
+							<h3>Location specific tag recommendation</h3>
+							<p>Find the hashtags that are trending in a location that are relevant to you. We find the tags that matter to the photographer.</p>
+							<ul class="actions">
+								<li><a href="#" class="button">More</a></li>
+							</ul>
+						</div>
+						<div class="4u 12u$(medium)">
+							<span class="image fit"><img src="{% static 'hunterapp/media/stock3.jpg' %}" alt="" /></span>
+							<h3>Location specific user recommendation</h3>
+							<p>We recommend you the best users for you in a certain location. Start to build a network of passionate photographers now.</p>
+							<ul class="actions">
+								<li><a href="#" class="button">More</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<span class="image fit"><img src="{% static 'hunterapp/media/stock4.jpg' %}" alt="" /></span>
+							<h3>User specific follower recommendation</h3>
+							<p>Find the followers that are similar to you. It is all about photography.</p>
+							<ul class="actions">
+								<li><a href="#" class="button">More</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+		<!-- Four -->
+			<section id="four" class="main style2 special">
+				<div class="container">
+					<header class="major">
+						<h2>Ready to join?</h2>
+					</header>
+					<p>Simply log in with your instagram account and you're all set to go.</p>
+					<ul class="actions uniform">
+						<li><a href="direct" class="button special">Log In</a></li>
+						<li><a href="privacypolicy" class="button">Data Privacy</a></li>
+					</ul>
+				</div>
+			</section>
+		
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="mailto:felipes@student.ethz.ch?Subject=Information Systems Lab%20LocationHunter" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; LocationHunter</li><li>Course: Information Systems Lab @ ETHZ</li>
+				</ul>
+			</section>
+		<!-- Scripts -->
+			<script src="{% static 'hunterapp/js/jquery.min.js' %}"></script>
+			<script src="{% static 'hunterapp/js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static 'hunterapp/js/skel.min.js' %}"></script>
+			<script src="{% static 'hunterapp/js/util.js' %}"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="{% static 'hunterapp/js/main.js' %}"></script>
+	</body>
+</html>

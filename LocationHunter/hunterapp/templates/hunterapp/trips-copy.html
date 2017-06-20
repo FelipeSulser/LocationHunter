@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <title>Location Hunter</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{% static 'hunterapp/css/scrollbar.css' %}">
+    <link rel="stylesheet" href="{% static 'hunterapp/css/style2.css' %}">
+    <link rel="stylesheet" href="{% static 'hunterapp/css/homepage.css' %}">
+    <link rel="stylesheet" href="{% static 'hunterapp/css/jquery.toast.min.css' %}">
+    <link rel="stylesheet" href="{% static 'hunterapp/css/calendar.css' %}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'hunterapp/css/trips.css' %}">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.js"></script>
+    <script src="{% static 'hunterapp/js/trips.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="col-sm-4">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">LocationHunter</a>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <ul class="nav navbar-nav nav-title">
+                <li><a href="#">DASHBOARD</a></li>
+            </ul>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> PROFILE</a></li>
+                    <li><a id="logoutid" href="../logout"><span class="glyphicon glyphicon-log-in"></span> LOGOUT</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!--main section-->
+<div class="container-fluid">
+    <div class="row main">
+        <div class="col-md-2 col-sm-3 col-xs-3">
+            <!-- BEGIN SIDEBAR -->
+            <div class="sidebar">
+                <div class="side-menu" data-spy="affix">
+                    <div class="row profile-user">
+                        <div class="col-sm-5">
+                            <div class="profile-img">
+                                <img src="{{profile_pic}}" class="img-responsive img-circle" alt="">
+                            </div>
+                        </div>
+                        <div class="col-sm-7 profile-usertitle">
+                            <h3>Welcome</h3>
+                            <div class="profile-usertitle-name">
+                                {{username}}
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-home"></i>
+                                DASHBOARD </a>
+                        </li>
+                        <li>
+                            <a href="/locationhunter/map_page/hashtags">
+                                <i class="glyphicon glyphicon-tag"></i>
+                                HASHTAG </a>
+                        </li>
+                        <li>
+                            <a href="/locationhunter/trips/">
+                                <i class="glyphicon glyphicon-plane"></i>
+                                TRIP </a>
+                        </li>
+                        <li>
+                            <a href="/locationhunter/map_page/influencers">
+                                <i class="glyphicon glyphicon-user"></i>
+                                PARTNER </a>
+                        </li>
+                        <li>
+                            <a href="/locationhunter/settings/">
+                                <i class="glyphicon glyphicon-cog"></i>
+                                SETTINGS </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- END MENU -->
+            </div>
+        </div>
+        <div id="centerdash" class="col-md-10 col-sm-9 col-xs-9">
+
+            <div class="col-md-9 col-sm-8">
+                <div class="container">
+                    <img src="https://www.google.com/images/srpr/logo4w.png" alt="Google"/>
+                    <form>
+                        <input type="text" class='city-search' name="search" placeholder="Search..">
+                    </form>
+
+                    <div class="gallery">
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg01.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg01.jpg" alt="">
+
+                            </figure>
+                            <figcaption>
+                                Recommended Location
+                            </figcaption>
+                        </a>
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg02.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg02.jpg" alt="">
+
+                            </figure>
+                            <figcaption>
+                                Recommended Location
+                            </figcaption>
+                        </a>
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg03.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg03.jpg" alt="">
+
+                            </figure>
+                            <figcaption>
+                                Recommended Location
+                            </figcaption>
+                        </a>
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg04.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg04.jpg" alt="">
+
+                            </figure>
+                            <figcaption>
+                                Recommended Location
+                            </figcaption>
+                        </a>
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg05.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg05.jpg" alt="">
+
+                            </figure>
+                            <figcaption>
+                                Recommended Location
+                            </figcaption>
+                        </a>
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg06.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg06.jpg" alt="">
+
+                            </figure>
+                            <figcaption>
+                                Recommended Location
+                            </figcaption>
+                        </a>
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg07.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg07.jpg" alt="">
+
+                            </figure>
+                            <figcaption>
+                                Recommended Location
+                            </figcaption>
+                        </a>
+                        <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg08.jpg">
+                            <figure>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg08.jpg" alt="">
+                                <figcaption>
+                                    Recommended Location,Please Add Accept and Decline Button, if Accept
+                                    the Location will show in Sidebar, if decline, it just disappear.Those first
+                                    8 pages is displayed by houssam's method, but even more simpler one
+                                </figcaption>
+                            </figure>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-3 col-sm-4" id="recommendation">
+                <h4 style="display: inline;">Drop Places Here!</h4>
+                <button id="generate" class="refresh btn btn-primary">Generate Trip Plan</button>
+                <knv class="scrollbar" id="style-default">
+                    <div class="force-overflow friend-list" id="selected-rec">
+                       <!-- <div class="friend-item w3-card-4 friendelem">
+                            <div class="w3-container w3-center" id="28516498">
+                                <a target="_blank" href="https://www.instagram.com/tonghuix/">
+                                    <img class="imagefollower"
+                                         src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg01.jpg">
+                                </a>
+                                <h4>Selected Location One</h4>
+                                <div class="w3-section">
+                                    <button class="btn btn-raised btn-primary friendbutton" id="accept">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="friend-item w3-card-4 friendelem">
+                            <div class="w3-container w3-center" id="28516498">
+                                <a target="_blank" href="https://www.instagram.com/tonghuix/">
+                                    <img class="imagefollower"
+                                         src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg06.jpg">
+                                </a>
+                                <h4>Selected Location One</h4>
+                                <div class="w3-section">
+                                    <button class="btn btn-raised btn-primary friendbutton" id="accept">Remove</button>
+                                </div>
+                            </div>
+                        </div>-->
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<footer>
+    <center>
+        <strong>TEAM 404</strong>
+    </center>
+</footer>
+<br>
+<br>
+</body>
+<script>
+
+
+</script>
+</html>
+
